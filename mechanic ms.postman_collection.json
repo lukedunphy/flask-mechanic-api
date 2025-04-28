@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Ludvig Åberg\",\n    \"email\": \"ludvig@pga.com\",\n    \"phone\": \"111-233-1111\"\n}",
+							"raw": "{\n    \"name\": \"Ludvig\",\n    \"email\": \"ludvig@pga.com\",\n    \"phone\": \"111-111-1111\",\n    \"password\": \"ilbay\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -65,11 +65,21 @@
 				{
 					"name": "update customer",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUzNzA1OTksImlhdCI6MTc0NTM2Njk5OSwic3ViIjoyfQ.QgqbyOqQDRwKy8HgwfW_ZkBHIWW1yvXauFgxxoA0Tx0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Justin Thomas\",\n    \"email\": \"jtom@gmail.com\",\n    \"phone\": \"222-222-2223\"\n}",
+							"raw": "{\n    \"name\": \"Justin Thomas\",\n    \"email\": \"jtom@gmail.com\",\n    \"phone\": \"222-222-2223\",\n    \"password\": \"i love me some me\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -77,7 +87,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/customers/2",
+							"raw": "http://127.0.0.1:5000/customers/update",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -88,7 +98,7 @@
 							"port": "5000",
 							"path": [
 								"customers",
-								"2"
+								"update"
 							]
 						}
 					},
@@ -97,10 +107,51 @@
 				{
 					"name": "delete customer",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUzNzA3ODMsImlhdCI6MTc0NTM2NzE4Mywic3ViIjoyfQ.AGNkOeKinamzW20Y3LNXiOHMPOzgzUDVMRet525l8hU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/customers/1",
+							"raw": "http://127.0.0.1:5000/customers",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ludvig@pga.com\",\n    \"password\": \"ilbay\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/customers/login",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -111,7 +162,7 @@
 							"port": "5000",
 							"path": [
 								"customers",
-								"1"
+								"login"
 							]
 						}
 					},
@@ -129,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Scottie\",\n    \"email\": \"shuffles@gmail.com\",\n    \"phone\": \"678-463-2743\",\n    \"salary\": 1000000\n}",
+							"raw": "{\n    \"name\": \"Carlos Alcaraz\",\n    \"email\": \"carlos@gmail.com\",\n    \"phone\": \"678-463-2743\",\n    \"salary\": 1000000\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -229,6 +280,29 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "popular mechanics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/mechanics/popular",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"mechanics",
+								"popular"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -242,7 +316,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"VIN\": \"xvhnr8723\",\n    \"service_date\": \"2025-10-15\",\n    \"service_desc\": \"brakes\",\n    \"mechanic_ids\": [2,3],\n    \"customer_id\": 4\n}",
+							"raw": "{\n    \"VIN\": \"xvhnr8723\",\n    \"service_date\": \"2025-10-15\",\n    \"service_desc\": \"brakes\",\n    \"mechanic_ids\": [1],\n    \"customer_id\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -283,6 +357,160 @@
 							"port": "5000",
 							"path": [
 								"service-tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update service ticket",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"add_ids\": [3],\n    \"remove_ids\": [2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/service-tickets/1/edit",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"service-tickets",
+								"1",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "inventory",
+			"item": [
+				{
+					"name": "create inventory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"tail light\",\n    \"price\": 10.99\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/inventory",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read inventory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/inventory",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update inventory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"tail light\",\n    \"price\": 12.99\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/inventory/4",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"inventory",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete inventory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/inventory/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"inventory",
+								"2"
 							]
 						}
 					},
