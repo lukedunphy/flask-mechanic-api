@@ -1,22 +1,54 @@
 from flask import request, jsonify
 from app.blueprints.customers import customers_bp
-from .schemas import customer_schema, customers_schema
+from .schemas import customer_schema, customers_schema, login_schema
 from marshmallow import ValidationError
 from app.models import Customer, db
 from sqlalchemy import select, delete
+from app.exstensions import cache, limiter
+from app.utils.util import encode_token, token_required
 
 
 # routes
+# login route
+@customers_bp.route('/login', methods=['POST'])
+def login():
+    try: 
+        credentials = login_schema.load(request.json)
+        email = credentials['email']
+        password = credentials['password']
+    except ValidationError as e:
+        return jsonify(e.messages)
+    
+    query = select(Customer).where(Customer.email == email)
+    customer = db.session.execute(query).scalars().first()
+
+    if customer and customer.password == password:
+        token = encode_token(customer.id)
+
+        response = {
+            "status": "success",
+            "message": "successfully logged in",
+            "token": token
+        }
+
+        return jsonify(response)
+    
+    else:
+        return jsonify({"message", "invalid email or password"})
+
 
 # create customer
+# limited to defend from DDOS attacks
 @customers_bp.route("/", methods=['POST'])
+@limiter.limit("5 per hour")
 def create_customer():
     try:
         customer_data = customer_schema.load(request.json)
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    new_customer = Customer(name=customer_data['name'], email=customer_data['email'], phone=customer_data['phone'])
+    new_customer = Customer(name=customer_data['name'], email=customer_data['email'],
+                             phone=customer_data['phone'], password=customer_data['password'])
 
     db.session.add(new_customer)
     db.session.commit()
@@ -24,16 +56,27 @@ def create_customer():
     return customer_schema.jsonify(new_customer), 201
 
 
-# read all customers
+# read all customers 
+# added caching because data does not change every second and 60 second timeout 
+# should not cause any user issues
 @customers_bp.route("/", methods=['GET'])
+# @cache.cached(timeout=60)
 def get_customers():
-    query = select(Customer)
-    result = db.session.execute(query).scalars().all()
-    return customers_schema.jsonify(result), 200
+    try:
+        page = int(request.args.get('page'))
+        per_page = int(request.args.get('per_page'))
+        query = select(Customer)
+        customers = db.paginate(query, page=page, per_page=per_page)
+        return customers_schema.jsonify(customers)
+    except:
+        query = select(Customer)
+        result = db.session.execute(query).scalars().all()
+        return customers_schema.jsonify(result), 200
 
 
-# update customer
-@customers_bp.route("/<int:customer_id>", methods=['POST'])
+# update customer 
+@customers_bp.route("/<int:customer_id>", methods=['PUT'])
+@limiter.limit("3 per hour")
 def update_customer(customer_id):
     query = select(Customer).where(Customer.id == customer_id)
     customer = db.session.execute(query).scalars().first()
@@ -55,8 +98,9 @@ def update_customer(customer_id):
     return customer_schema.jsonify(customer), 200
 
 
-# delete customer
-@customers_bp.route("/<int:customer_id>", methods=['DELETE'])
+# delete customer 
+@customers_bp.route("/", methods=['DELETE'])
+@token_required
 def delete_customer(customer_id):
     customer = db.session.scalar(select(Customer).where(Customer.id == customer_id))
 
