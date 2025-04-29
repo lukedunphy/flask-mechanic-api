@@ -71,6 +71,7 @@ def delete_mechanic(mechanic_id):
     return jsonify({"message":f"successfully deleted mechanic {mechanic_id}"})
 
 
+# popular mechanic
 @mechanics_bp.route('/popular', methods=['GET'])
 def popular_mechanics():
     query = select(Mechanic)

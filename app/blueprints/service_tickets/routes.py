@@ -38,9 +38,9 @@ def create_service_ticket():
     return service_ticket_schema.jsonify(new_ticket)
 
 
-# read service ticekts - cached
+# read service ticekts 
 @service_ticket_bp.route("/", methods=['GET'])
-@cache.cached(timeout=60)
+# @cache.cached(timeout=60)
 def read_service_ticekts():
     query = select(ServiceTicket)
     result = db.session.execute(query).scalars().all()

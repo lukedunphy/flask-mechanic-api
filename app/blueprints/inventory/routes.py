@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from app.blueprints.inventory import inventory_bp
-from app.blueprints.inventory.schemas import inventory_schema, inventories_schema, create_inventory_schema
+from app.blueprints.inventory.schemas import inventory_schema, inventories_schema, create_inventory_schema, create_inventories_schema
 from marshmallow import ValidationError
 from app.models import Inventory, db
 from sqlalchemy import select, delete
@@ -29,7 +29,7 @@ def get_inventory():
     query = select(Inventory)
     result = db.session.execute(query).scalars().all()
 
-    return inventories_schema.jsonify(result), 200
+    return create_inventories_schema.jsonify(result), 200
 
 
 # update inventory

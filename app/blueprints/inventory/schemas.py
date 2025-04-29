@@ -19,7 +19,8 @@ class CreateInventorySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Inventory
         fields = ("id", "name", "price")
-    
+
+
 
 ticket_part_schema = TicketPartSchema()
 ticket_parts_schema = TicketPartSchema(many=True)

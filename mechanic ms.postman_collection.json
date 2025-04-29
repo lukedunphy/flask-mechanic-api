@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Ludvig\",\n    \"email\": \"ludvig@pga.com\",\n    \"phone\": \"111-111-1111\",\n    \"password\": \"ilbay\"\n}",
+							"raw": "{\n    \"name\": \"David\",\n    \"email\": \"dacid@pga.com\",\n    \"phone\": \"111-111-1111\",\n    \"password\": \"2015\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,7 +46,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/customers",
+							"raw": "http://127.0.0.1:5000/customers?page=2&per_page=2",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -57,6 +57,16 @@
 							"port": "5000",
 							"path": [
 								"customers"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -75,11 +85,11 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Justin Thomas\",\n    \"email\": \"jtom@gmail.com\",\n    \"phone\": \"222-222-2223\",\n    \"password\": \"i love me some me\"\n}",
+							"raw": "{\n    \"name\": \"Justin Thomas\",\n    \"email\": \"jtom@gmail.com\",\n    \"phone\": \"222-222-2223\",\n    \"password\": \"ralph\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -87,7 +97,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/customers/update",
+							"raw": "http://127.0.0.1:5000/customers/2",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -98,7 +108,7 @@
 							"port": "5000",
 							"path": [
 								"customers",
-								"update"
+								"2"
 							]
 						}
 					},
@@ -112,7 +122,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUzNzA3ODMsImlhdCI6MTc0NTM2NzE4Mywic3ViIjoyfQ.AGNkOeKinamzW20Y3LNXiOHMPOzgzUDVMRet525l8hU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDU5NDYwODIsImlhdCI6MTc0NTk0MjQ4Miwic3ViIjoyfQ.z5c0ZbVayuvcNXSZ2-kNerTaivxR7tT5V1NJ7hOE11Y",
 									"type": "string"
 								}
 							]
@@ -143,7 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"ludvig@pga.com\",\n    \"password\": \"ilbay\"\n}",
+							"raw": "{\n    \"email\": \"jtom@gmail.com\",\n    \"password\": \"ralph\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -180,7 +190,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Carlos Alcaraz\",\n    \"email\": \"carlos@gmail.com\",\n    \"phone\": \"678-463-2743\",\n    \"salary\": 1000000\n}",
+							"raw": "{\n    \"name\": \"Patrick\",\n    \"email\": \"pj@gmail.com\",\n    \"phone\": \"678-463-2743\",\n    \"salary\": 1000000\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +251,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/mechanics/6",
+							"raw": "http://127.0.0.1:5000/mechanics/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -252,7 +262,7 @@
 							"port": "5000",
 							"path": [
 								"mechanics",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -264,7 +274,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/mechanics/3",
+							"raw": "http://127.0.0.1:5000/mechanics/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -275,7 +285,7 @@
 							"port": "5000",
 							"path": [
 								"mechanics",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -316,7 +326,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"VIN\": \"xvhnr8723\",\n    \"service_date\": \"2025-10-15\",\n    \"service_desc\": \"brakes\",\n    \"mechanic_ids\": [1],\n    \"customer_id\": 1\n}",
+							"raw": "{\n    \"VIN\": \"xvhnr8723\",\n    \"service_date\": \"2025-10-15\",\n    \"service_desc\": \"brakes\",\n    \"mechanic_ids\": [2,3],\n    \"customer_id\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -396,10 +406,35 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "add part to ticket",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"part_id\": 6,\n    \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/service-tickets/2/parts",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"service-tickets",
+								"2",
+								"parts"
+							]
+						}
 					},
 					"response": []
 				}
@@ -415,7 +450,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"tail light\",\n    \"price\": 10.99\n}",
+							"raw": "{\n    \"name\": \"engine filter\",\n    \"price\": 15.99\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -496,7 +531,7 @@
 				{
 					"name": "delete inventory",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "http://127.0.0.1:5000/inventory/2",
