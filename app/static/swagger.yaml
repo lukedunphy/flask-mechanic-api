@@ -5,9 +5,9 @@ info:
   title: "AutoShop API"
   description: "API to manage an Auto Shop"
   version: "1.0.0"
-host: "127.0.0.1:5000"
+host: "my-auto-shop.onrender.com"
 schemes:
-  - "http"
+  - "https"
 consumes:
   - "application/json"
 produces:
