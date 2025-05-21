@@ -55,11 +55,14 @@ def update_inventory(item_id):
 # delete inventory item
 @inventory_bp.route('/<int:item_id>', methods=['DELETE'])
 def delete_inventory(item_id):
-    query = delete(Inventory).where(Inventory.id == item_id)
-    item = db.session.execute(query)
+    result = db.session.execute(
+        delete(Inventory).where(Inventory.id == item_id)
+    )
 
-    if item == None:
-        return jsonify({"message": "invalid id"})
-    
+    if result.rowcount == 0:
+        return jsonify({"message": "invalid id"}), 404
+
     db.session.commit()
-    return jsonify({"message": f"successfully deleted inventory item {item_id}"})
+    return jsonify({
+        "message": f"successfully deleted inventory item {item_id}"
+    }), 200

@@ -51,7 +51,7 @@ class Mechanic(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(db.String(100))
     email: Mapped[str] = mapped_column(db.String(150))
-    phone: Mapped[str] = mapped_column(db.String(13))
+    password: Mapped[str] = mapped_column(db.String(30))
     salary: Mapped[int] = mapped_column(nullable=False)
 
     service_tickets: Mapped[List["ServiceTicket"]] = db.relationship(secondary=service_mechanics, back_populates="mechanics", cascade="all, delete", passive_deletes=True)

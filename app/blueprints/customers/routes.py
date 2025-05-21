@@ -17,7 +17,7 @@ def login():
         email = credentials['email']
         password = credentials['password']
     except ValidationError as e:
-        return jsonify(e.messages)
+        return jsonify(e.messages), 400
     
     query = select(Customer).where(Customer.email == email)
     customer = db.session.execute(query).scalars().first()
@@ -31,10 +31,10 @@ def login():
             "token": token
         }
 
-        return jsonify(response)
+        return jsonify(response), 200
     
     else:
-        return jsonify({"message", "invalid email or password"})
+        return jsonify({"message": "invalid email or password"}), 401
 
 
 # create customer
@@ -72,11 +72,22 @@ def get_customers():
         query = select(Customer)
         result = db.session.execute(query).scalars().all()
         return customers_schema.jsonify(result), 200
+    
 
+# read customer
+@customers_bp.route("/<int:customer_id>", methods=['GET'])
+def get_customer(customer_id):
+    customer = db.session.get(Customer, customer_id)
 
+    if customer:
+        return customer_schema.jsonify(customer), 200
+    
+    return jsonify({"error": "invalid customer id"}), 400
+    
+    
 # update customer 
-@customers_bp.route("/<int:customer_id>", methods=['PUT'])
-@limiter.limit("3 per hour")
+@customers_bp.route("/", methods=['PUT'])
+@token_required
 def update_customer(customer_id):
     query = select(Customer).where(Customer.id == customer_id)
     customer = db.session.execute(query).scalars().first()
@@ -112,3 +123,12 @@ def delete_customer(customer_id):
     db.session.commit()
 
     return jsonify({"message": f"successfully deleted customer {customer_id}"})
+
+
+# search by email
+@customers_bp.route("/search", methods=['GET'])
+def search_by_email():
+    email = request.args.get("email")
+    query = select(Customer).where(Customer.email.like(f"%{email}%"))
+    customer = db.session.execute(query).scalars().all()
+    return customers_schema.jsonify(customer)

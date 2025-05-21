@@ -29,13 +29,13 @@ def create_service_ticket():
         if mechanic:
             new_ticket.mechanics.append(mechanic)
         else:
-            return jsonify({"message": "invalid mechanic id"})
+            return jsonify({"message": "invalid mechanic id"}), 404
         
     db.session.add(new_ticket)
     db.session.commit()
 
 
-    return service_ticket_schema.jsonify(new_ticket)
+    return service_ticket_schema.jsonify(new_ticket), 201
 
 
 # read service ticekts 
@@ -53,10 +53,12 @@ def edit_ticket(ticket_id):
     try:
         ticket_edits = edit_ticket_schema.load(request.json)
     except ValidationError as e:
-        return jsonify(e.messages)
+        return jsonify(e.messages), 400
     
     query = select(ServiceTicket).where(ServiceTicket.id == ticket_id)
     ticket = db.session.execute(query).scalars().first()
+    if not ticket:
+        return jsonify({"message": "service ticket not found"}), 404
 
     for mechanic_id in ticket_edits['add_ids']:
         query = select(Mechanic).where(Mechanic.id == mechanic_id)
@@ -73,7 +75,22 @@ def edit_ticket(ticket_id):
             ticket.mechanics.remove(mechanic)
 
     db.session.commit()
-    return return_ticket_schema.jsonify(ticket)
+    return return_ticket_schema.jsonify(ticket), 200
+
+
+@service_ticket_bp.route('/<int:ticket_id>', methods=['DELETE'])
+def delete_ticket(ticket_id):
+    query = select(ServiceTicket).where(ServiceTicket.id == ticket_id)
+    ticket = db.session.execute(query).scalars().first()
+
+    if not ticket:
+        return jsonify({"message": "service ticket not found"}), 404
+
+    db.session.delete(ticket)
+    db.session.commit()
+
+    return jsonify({"message": f"Service ticket {ticket_id} deleted"}), 200
+    
 
 
 # add part to ServiceTicket
