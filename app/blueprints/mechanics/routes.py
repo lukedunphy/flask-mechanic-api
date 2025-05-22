@@ -59,7 +59,6 @@ def create_mechanic():
 
 # read all mechanics - cached
 @mechanics_bp.route("/", methods=['GET'])
-@cache.cached(timeout=60)
 def get_mechanics():
     query = select(Mechanic)
     result = db.session.execute(query).scalars().all()
