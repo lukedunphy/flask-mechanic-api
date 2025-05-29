@@ -196,7 +196,7 @@ paths:
                 type: string
               password:
                 type: string
-            examples:
+            example:
               email: "cust@example.com"
               password: "password"
       responses:
@@ -204,6 +204,9 @@ paths:
           description: Successful customer login
           schema:
             $ref: '#/definitions/CustomerToken'
+          examples:
+            application/json:
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
   /customers/{id}:
     get:
