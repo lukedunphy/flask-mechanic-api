@@ -431,7 +431,7 @@ paths:
   /service-tickets/{ticket_id}/parts:
     post:
       tags:
-        - ServiceTickets
+        - Service Tickets
       summary: Add Part to Service Ticket
       parameters:
         - name: ticket_id
