@@ -55,6 +55,7 @@ paths:
             example:
               token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
+  /mechanics:
     post:
       tags:
         - Mechanics
@@ -72,12 +73,13 @@ paths:
           description: Mechanic created successfully
           schema:
             $ref: '#/definitions/MechanicResponse'
-          example:
-            email: "johndoe@email.com"
-            id: 1
-            name: "John"
-            salary: 1000000
-            tickets: []
+          examples:
+            application/json:
+              email: "johndoe@email.com"
+              id: 1
+              name: "John"
+              salary: 1000000
+              tickets: []
 
     get:
       tags:
@@ -89,12 +91,13 @@ paths:
           description: List of mechanics
           schema:
             $ref: '#/definitions/MechanicListResponse'
-          example:
-            - id: 1
-              name: "John"
-              email: "johndoe@email.com"
-              salary: 1000000
-              tickets: []
+          examples:
+            application/json:
+              - id: 1
+                name: "John"
+                email: "johndoe@email.com"
+                salary: 1000000
+                tickets: []
 
     put: #request type
       tags:
@@ -193,7 +196,7 @@ paths:
                 type: string
               password:
                 type: string
-            example:
+            examples:
               email: "cust@example.com"
               password: "password"
       responses:
@@ -282,31 +285,24 @@ paths:
               password: "12345"
               phone: "111-111-1111"
 
-    put: 
+    put:
       tags:
         - Customers
       summary: Update a Customer (token required)
-      description: Update an existing customer, requires that customer to be logged in.
-      security: 
+      description: Update an existing customer; requires a valid bearer token.
+      security:
         - bearerAuth: []
       parameters:
-        - in: body
-          name: body
+        - name: body
+          in: body
           description: Information to update customer
           required: true
           schema:
             $ref: '#/definitions/CustomerPayload'
-          examples:
-            application/json:
-              email: "johndoe@email.com"
-              id: 1
-              name: "John"
-              password: "12345"
-              phone: "111-111-1111"
-      responses: 
-        200: 
+      responses:
+        200:
           description: Successful Update
-          schema: 
+          schema:
             $ref: '#/definitions/CustomerResponse'
           examples:
             application/json:
@@ -314,7 +310,6 @@ paths:
               id: 1
               name: "John"
               password: "123btr"
-              phone: "111-111-1111"
 
     delete:
       tags:
