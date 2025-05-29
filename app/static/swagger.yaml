@@ -23,79 +23,76 @@ paths:
 
 # mechanic paths
 
-  /mechanics/login: #endpoint
-    post: #request type
+  /mechanics/login:
+    post:
       tags:
         - Mechanics
       summary: Mechanic Login (generate token)
-      description: Post login credentials (email & password), if valid a user specific token will be minted and returned.
-      parameters: 
-        - in: body
-          name: body
-          description: Login Credentials
+      description: Post login credentials (email & password); returns a JWT token if valid.
+      parameters:
+        - name: body
+          in: body
+          description: Login credentials
           required: true
-          schema:  
+          schema:
             type: object
             properties:
-              email: 
+              email:
                 type: string
               password:
                 type: string
-      responses: 
-        200: 
-          description:: Successful Login
-          schema: 
+            example:
+              email: "user@example.com"
+              password: "hunter2"
+      responses:
+        200:
+          description: Successful login
+          schema:
             type: object
             properties:
               token:
                 type: string
-          examples:
-            application/json:
-              token: "eyJhbGciOiJIUzI1N..."
+            example:
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
-  /mechanics: #endpoint
-    post: #request type
+    post:
       tags:
         - Mechanics
       summary: Create a Mechanic
-      description: Send a JSON payload including mechanic information to create a new mechanic in the database.
-      parameters: 
-        - in: body
-          name: body
-          description: Information of mechanic to be created.
+      description: Add a new mechanic record to the database.
+      parameters:
+        - name: body
+          in: body
+          description: Mechanic payload
           required: true
-          schema:  
+          schema:
             $ref: '#/definitions/MechanicPayload'
-      responses: 
-        201: 
-          description: Successful Creation
-          schema: 
+      responses:
+        201:
+          description: Mechanic created successfully
+          schema:
             $ref: '#/definitions/MechanicResponse'
-          examples:
-            application/json:
-              email: "johndoe@email.com"
-              id: 1
-              name: "John"
-              password: "123btr"
-              salary: 1000000
-              tickets: []
+          example:
+            email: "johndoe@email.com"
+            id: 1
+            name: "John"
+            salary: 1000000
+            tickets: []
 
-    get: #request type
+    get:
       tags:
         - Mechanics
       summary: Get Mechanics
-      description: Endpoint to return all mechanics
-      responses: 
-        201: 
-          description: Successful Retrieval   
-          schema: 
+      description: Retrieve all mechanics.
+      responses:
+        200:
+          description: List of mechanics
+          schema:
             $ref: '#/definitions/MechanicListResponse'
-          examples:
-            application/json:
-              email: "johndoe@email.com"
-              id: 1
+          example:
+            - id: 1
               name: "John"
-              password: "123btr"
+              email: "johndoe@email.com"
               salary: 1000000
               tickets: []
 
@@ -178,73 +175,68 @@ paths:
 
 # customer paths
 
-  /customers/login: #endpoint
-      post: #request type
-        tags:
-          - Customers
-        summary: Customer Login (generate token)
-        description: Post login credentials (email & password), if valid a user specific token will be minted and returned.
-        parameters: 
-          - in: body
-            name: body
-            description: Login Credentials
-            required: true
-            schema:  
-              type: object
-              properties:
-                email: 
-                  type: string
-                password:
-                  type: string
-        responses: 
-          200: 
-            description:: Successful Login
-            schema: 
-              type: object
-              properties:
-                token:
-                  type: string
-            examples:
-              application/json:
-                token: "eyJhbGciOiJIUzI1N..."
+  /customers/login:
+    post:
+      tags:
+        - Customers
+      summary: Customer Login
+      description: Authenticate customer and return token.
+      parameters:
+        - name: body
+          in: body
+          description: Login credentials
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+            example:
+              email: "cust@example.com"
+              password: "password"
+      responses:
+        200:
+          description: Successful customer login
+          schema:
+            $ref: '#/definitions/CustomerToken'
 
   /customers/{id}:
     get:
       tags:
         - Customers
       summary: Get Customer by ID
-      description: Pass customer ID as path parameter and receive associated customer
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
+          description: Numeric customer ID
           required: true
-          schema:
-            type: integer
-            minimum: 1
-          description: The user ID
+          type: integer
       responses:
         200:
-          description: Successful Retrieval
+          description: Customer data
           schema:
-            $ref: '#/definitions/CustomerResponse'
+            $ref: '#/definitions/Customer'
          
   /customers/search:
     get:
       tags:
         - Customers
-      summary: Get Customer by Email
-      description: Pass customer email as a query parameter and receive associated customer
+      summary: Search Customers by Email
       parameters:
-        - in: query
-          name: email
-          schema:
-            type: string
-          description: Customer Email
+        - name: email
+          in: query
+          description: Email address to filter by
+          required: false
+          type: string
       responses:
         200:
-          description: Successful Search
+          description: Matching customers
           schema:
-            $ref: '#/definitions/CustomerListResponse'
+            type: array
+            items:
+              $ref: '#/definitions/Customer'
 
   /customers:
     get:
@@ -441,37 +433,25 @@ paths:
   /service-tickets/{ticket_id}/parts:
     post:
       tags:
-        - Service Tickets
-      summary: Add a part to a Service Ticket
-      description: Attach a part (by ID) with a specified quantity to an existing service ticket.
+        - ServiceTickets
+      summary: Add Part to Service Ticket
       parameters:
-        - in: path
-          name: ticket_id
-          description: ID of the service ticket to update
+        - name: ticket_id
+          in: path
+          description: ID of the service ticket
           required: true
-          type:: integer
-        - in: body
-          name: body
-          description: Part ID and quantity to add
+          type: string
+        - name: body
+          in: body
+          description: Part details to add
           required: true
           schema:
-            $ref: '#/definitions/ServiceTicketPartPayload'
+            $ref: '#/definitions/PartPayload'
       responses:
-        200:
-          description: Service ticket updated with new part
+        201:
+          description: Part added successfully
           schema:
-            $ref: '#/definitions/ServiceTicketResponse'
-          examples:
-            application/json:
-              id: 1
-              VIN: "1HGCM82633A004352"
-              service_date: "2025-05-14"
-              service_desc: "Oil change"
-              customer_id: 1
-              mechanics: [1, 2, 3]
-              ticket_parts:
-                - part_id: 1
-                  quantity: 2
+            $ref: '#/definitions/PartResponse'
 
   /service-tickets/{ticket_id}:
     delete:
